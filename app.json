@@ -1,0 +1,28 @@
+{
+  "name": "GiveCampus Campaign Status in CSS",
+  "description": "A simple Sinatra application that populates GiveCampus content in CSS",
+  "repository": "https://github.com/fordhamumc/email-progress.git",
+  "success_url": "/progress.css",
+  "env": {
+    "GIVECAMPUS_URL": {
+      "description": "The URL to scrape.",
+      "value": "https://www.givecampus.com/schools/FordhamUniversity/fordham-university-s-giving-tuesday",
+      "required": true
+    },
+    "DONORS_PATH": {
+      "description": "The path to the donor count.",
+      "value": ".campaign-details .row .row:first-child .campaign-stats-font",
+      "required": true
+    },
+    "GOAL_PATH": {
+      "description": "The path to the percent of donor goal.",
+      "value": ".campaign-details .row .row:first-child .progress-percent",
+      "required": true
+    },
+    "RAISED_PATH": {
+      "description": "The path to the amount of money raised.",
+      "value": ".campaign-details .row .row:nth-child(2) .campaign-stats-font",
+      "required": true
+    },
+  }
+}
