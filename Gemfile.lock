@@ -1,3 +1,10 @@
+GIT
+  remote: git://github.com/Eventshare/screencap.git
+  revision: 0478476c539d753644599f4f679ba0ab546f2f99
+  specs:
+    screencap (0.2.1)
+      phantomjs
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -6,6 +13,7 @@ GEM
     mini_portile2 (2.1.0)
     nokogiri (1.7.0.1)
       mini_portile2 (~> 2.1.0)
+    phantomjs (2.1.1.0)
     puma (2.11.2)
       rack (>= 1.1, < 2.0)
     rack (1.6.1)
@@ -25,6 +33,7 @@ DEPENDENCIES
   foreman
   nokogiri
   puma
+  screencap!
   sinatra
 
 RUBY VERSION

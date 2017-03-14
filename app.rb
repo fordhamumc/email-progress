@@ -1,7 +1,9 @@
 require 'open-uri'
-require 'net/http'
+require 'tilt/erb'
 require 'sinatra'
 require 'nokogiri'
+require 'screencap'
+
 
 get '/progress.css' do
   content_type 'text/css'
@@ -14,7 +16,8 @@ get '/progress.css' do
 
   <<-CSS
     .progress {
-      line-height: 1.6
+      display: inline-block;
+      line-height: 1.6;
     }
     .progress .donors:after {
       content: "#{donors} donors";
@@ -50,4 +53,25 @@ end
 
 get '/' do
   erb :layout
+end
+
+
+get '/progress.html' do
+  f = Screencap::Fetcher.new('http://localhost:5000/')
+  screenshot = f.fetch(
+      :output => '.public/progress.png',
+      :div => '.progress'
+  )
+  <<-HTML
+    <!DOCTYPE HTML>
+    <html lang="en-US">
+    <head>
+      <meta charset="UTF-8">
+    </head>
+    <body>
+      new screenshot created<br />
+      <img src="progress.png">
+    </body>
+    </html>
+  HTML
 end
