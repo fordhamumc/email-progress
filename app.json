@@ -24,5 +24,10 @@
       "value": ".campaign-details .row .row:nth-child(2) .campaign-stats-font",
       "required": true
     },
+    "SCREENSHOT_URL": {
+      "description": "The URL to screenshot for the backup image.",
+      "value": "https://fordham-giving-progress.herokuapp.com/",
+      "required": true
+    }
   }
 }
