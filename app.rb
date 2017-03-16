@@ -31,6 +31,7 @@ get '/progress.css' do
       background-color: #900028;
       height: 100%;
       width: #{[goal.to_f, 100].min}%;
+      -webkit-animation: slideright 1s ease-out;
       animation: slideright 1s ease-out;
       transform-origin: top left;
     }
@@ -40,12 +41,25 @@ get '/progress.css' do
     .progress .raised:after {
       content: "#{raised} donated";
     }
+    @-webkit-keyframes slideright {
+      0% {
+        transform: scaleX(0);
+      }
+      100% {
+        transform: scaleX(100%);
+      }
+    }
     @keyframes slideright {
       0% {
         transform: scaleX(0);
       }
       100% {
         transform: scaleX(100%);
+      }
+    }
+    @media screen and (-webkit-min-device-pixel-ratio: 0) {
+      .webkit-hide {
+        display: none !important;
       }
     }
   CSS
