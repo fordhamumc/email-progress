@@ -61,10 +61,8 @@ get '/progress.css' do
         transform: scaleX(100%);
       }
     }
-    @media screen and (-webkit-min-device-pixel-ratio: 0) {
-      .webkit-hide {
-        display: none !important;
-      }
+    .webkit-hide {
+      display: none !important;
     }
   CSS
 end
