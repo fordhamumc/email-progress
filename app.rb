@@ -4,9 +4,13 @@ require 'sinatra'
 require 'nokogiri'
 require 'screencap'
 
+configure do
+  set :static_cache_control, [:no_cache, :no_store, :must_revalidate, max_age: 0]
+end
 
 get '/progress.css' do
   content_type 'text/css'
+  expires 0, :no_cache, :no_store, :must_revalidate
   url = ENV.fetch('GIVECAMPUS_URL')
   data = Nokogiri::HTML(open(url))
 
