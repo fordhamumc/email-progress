@@ -75,7 +75,7 @@ end
 get '/progress.html' do
   f = Screencap::Fetcher.new(ENV.fetch('SCREENSHOT_URL'))
   screenshot = f.fetch(
-      :output => '.public/progress.png',
+      :output => './public/progress.png',
       :div => '.progress'
   )
   <<-HTML
