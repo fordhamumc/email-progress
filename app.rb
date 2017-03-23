@@ -19,10 +19,6 @@ get '/progress.css' do
   raised = data.css(ENV.fetch('RAISED_PATH'))[0].content.strip
 
   <<-CSS
-    .progress {
-      display: inline-block;
-      line-height: 1.6;
-    }
     .progress .donors:after {
       content: "#{donors} donors";
     }
@@ -86,7 +82,7 @@ get '/progress.html' do
     </head>
     <body>
       new screenshot created<br />
-      <img src="progress.png">
+      <img src="progress.png" width="304">
     </body>
     </html>
   HTML
