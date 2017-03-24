@@ -24,7 +24,6 @@ class Leaderboard
             'dollars' => child(3, item)
           }
         end
-      else
       end
     end.compact[0] || []
   end
@@ -71,8 +70,8 @@ get '/progress.css' do
   raised = data.at_css(ENV.fetch('RAISED_PATH')).content.strip
   leaderboards = data.css(ENV.fetch('LEADERBOARD_PATH'))
 
-  leaderboard_class = Leaderboard.new('class leaderboard', leaderboards)
-  leaderboard_scholarships = Leaderboard.new('scholarships leaderboard', leaderboards)
+  leaderboard_class = Leaderboard.new(ENV.fetch('LEADERBOARDITEM_CLASS'), leaderboards)
+  leaderboard_scholarships = Leaderboard.new(ENV.fetch('LEADERBOARDITEM_SCHOLARSHIP'), leaderboards)
 
   <<-CSS
     .progress .donors:after {

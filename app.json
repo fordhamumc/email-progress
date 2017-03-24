@@ -24,6 +24,21 @@
       "value": ".campaign-details .row .row:nth-child(2) .campaign-stats-font",
       "required": true
     },
+    "LEADERBOARD_PATH": {
+      "description": "The path to the leaderboard object.",
+      "value": ".leaderboard-table",
+      "required": true
+    },
+    "LEADERBOARDITEM_CLASS": {
+      "description": "The search query to find the class leaderboard.",
+      "value": "class leaderboard",
+      "required": true
+    },
+    "LEADERBOARDITEM_SCHOLARSHIP": {
+      "description": "The search query to find the scholarship leaderboard.",
+      "value": "designation leaderboard",
+      "required": true
+    },
     "SCREENSHOT_URL": {
       "description": "The URL to screenshot for the backup image.",
       "value": "https://fordham-giving-progress.herokuapp.com/",
