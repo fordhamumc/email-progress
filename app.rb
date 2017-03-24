@@ -8,15 +8,71 @@ configure do
   set :static_cache_control, [:no_cache, :no_store, :must_revalidate, max_age: 0]
 end
 
+class Leaderboard
+
+  def initialize(query, leaderboards)
+    @leaderboard = reduce(query, leaderboards)
+  end
+
+  def reduce(search, arr)
+    arr.map do |lb|
+      if lb.at_css('caption > text()').content.strip.downcase == search
+        lb.css('tbody tr').map do |item|
+          {
+            'name' => child(1, item),
+            'donors' => child(2, item),
+            'dollars' => child(3, item)
+          }
+        end
+      else
+      end
+    end.compact[0] || []
+  end
+
+  def child(num, arr)
+    arr.at_css("td:nth-child(#{num})").content.strip
+  end
+
+  def sort(column, dir = 'desc')
+    @leaderboard.sort! do |a,b|
+      a,b = b,a if dir == 'desc'
+      a[column].gsub(/\D/,'').to_i <=> b[column].gsub(/\D/,'').to_i
+    end
+    self
+  end
+
+  def css(namespace, num = 5)
+    lb = if num > 0 then @leaderboard.take(num) else @leaderboard end
+
+    lb.map.with_index do |item, i|
+      result = ''
+      item.each do |key, value|
+        result << "
+          #lb-#{namespace}-#{i + 1} .#{key}:after {
+            content: '#{value}';
+          }
+        "
+      end
+      result
+    end.join("\n")
+  end
+
+end
+
+
 get '/progress.css' do
   content_type 'text/css'
   expires 0, :no_cache, :no_store, :must_revalidate
   url = ENV.fetch('GIVECAMPUS_URL')
   data = Nokogiri::HTML(open(url))
 
-  donors = data.css(ENV.fetch('DONORS_PATH'))[0].content.strip
-  goal = data.css(ENV.fetch('GOAL_PATH'))[0].content.strip
-  raised = data.css(ENV.fetch('RAISED_PATH'))[0].content.strip
+  donors = data.at_css(ENV.fetch('DONORS_PATH')).content.strip
+  goal = data.at_css(ENV.fetch('GOAL_PATH')).content.strip
+  raised = data.at_css(ENV.fetch('RAISED_PATH')).content.strip
+  leaderboards = data.css(ENV.fetch('LEADERBOARD_PATH'))
+
+  leaderboard_class = Leaderboard.new('class leaderboard', leaderboards)
+  leaderboard_scholarships = Leaderboard.new('scholarships leaderboard', leaderboards)
 
   <<-CSS
     .progress .donors:after {
@@ -41,6 +97,12 @@ get '/progress.css' do
     .progress .raised:after {
       content: "#{raised} donated";
     }
+
+    #{leaderboard_class.sort('donors').css('class')}
+
+    #{leaderboard_scholarships.sort('dollars').css('scholarship')}
+
+
     @-webkit-keyframes slideright {
       0% {
         transform: scaleX(0);
@@ -61,6 +123,7 @@ get '/progress.css' do
       display: none !important;
     }
   CSS
+
 end
 
 get '/' do
