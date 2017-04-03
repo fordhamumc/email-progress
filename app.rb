@@ -40,6 +40,13 @@ class Leaderboard
     self
   end
 
+  def strip(field, phrase)
+    @leaderboard.each do |item|
+      item[field].gsub!(phrase,'')
+    end
+    self
+  end
+
   def css(namespace, num = 5)
     lb = if num > 0 then @leaderboard.take(num) else @leaderboard end
 
@@ -48,7 +55,7 @@ class Leaderboard
       item.each do |key, value|
         result << "
           #lb-#{namespace}-#{i + 1} .#{key}:after {
-            content: '#{value}';
+            content: \"#{value}\";
           }
         "
       end
@@ -67,15 +74,19 @@ get '/progress.css' do
 
   donors = data.at_css(ENV.fetch('DONORS_PATH')).content.strip
   goal = data.at_css(ENV.fetch('GOAL_PATH')).content.strip
+  goalmin = [goal.to_f, 100].min
   raised = data.at_css(ENV.fetch('RAISED_PATH')).content.strip
-  leaderboards = data.css(ENV.fetch('LEADERBOARD_PATH'))
 
-  leaderboard_class = Leaderboard.new(ENV.fetch('LEADERBOARDITEM_CLASS'), leaderboards)
-  leaderboard_scholarships = Leaderboard.new(ENV.fetch('LEADERBOARDITEM_SCHOLARSHIP'), leaderboards)
+  leaderboards = data.css(ENV.fetch('LEADERBOARD_PATH'))
+  leaderboard_class = Leaderboard.new(ENV.fetch('LEADERBOARDITEM_CLASS'), leaderboards).strip('name', /\D/).sort('donors')
+  leaderboard_scholarships = Leaderboard.new(ENV.fetch('LEADERBOARDITEM_SCHOLARSHIP'), leaderboards).sort('dollars')
 
   <<-CSS
-    .progress .donors:after {
-      content: "#{donors} donors";
+    .progress .total-donors:before {
+      content: "#{donors}";
+    }
+    .progress .total-donors:after {
+      content: "Donors";
     }
     .progress .goal {
       border: 2px solid #555555;
@@ -85,21 +96,24 @@ get '/progress.css' do
     .progress .goal-slider {
       background-color: #900028;
       height: 100%;
-      width: #{[goal.to_f, 100].min}%;
-      -webkit-animation: slideright 1s ease-out;
-      animation: slideright 1s ease-out;
+      width: #{goalmin}%;
+      -webkit-animation: slideright #{[(goalmin.to_f / 100), 0.2].max}s ease-out;
+      animation: slideright #{[(goalmin.to_f / 100), 0.2].max}s ease-out;
       transform-origin: top left;
     }
     .progress .goal-text:after {
       content: "#{goal} of donor goal";
     }
-    .progress .raised:after {
-      content: "#{raised} donated";
+    .progress .total-dollars:before {
+      content: "#{raised}";
+    }
+    .progress .total-dollars:after {
+      content: "Raised";
     }
 
-    #{leaderboard_class.sort('donors').css('class')}
+    #{leaderboard_class.css('class')}
 
-    #{leaderboard_scholarships.sort('dollars').css('scholarship')}
+    #{leaderboard_scholarships.css('support')}
 
 
     @-webkit-keyframes slideright {

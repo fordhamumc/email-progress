@@ -36,7 +36,7 @@
     },
     "LEADERBOARDITEM_SCHOLARSHIP": {
       "description": "The search query to find the scholarship leaderboard.",
-      "value": "designation leaderboard",
+      "value": "top supported areas",
       "required": true
     },
     "SCREENSHOT_URL": {
