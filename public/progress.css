@@ -1,55 +1,50 @@
-    /* Updated: 2017-04-04 13:18:12 -0400 */
-
-    .progress-stats .total-donors:before { content: "47"; }
-    .progress-stats .total-donors:after { content: "Donors"; }
-    .progress-bar {
-      border: 2px solid #555555;
-      height: 30px;
-      margin: 0 auto 7px;
-    }
-    .progress-bar .bar {
-      background-color: #900028;
-      height: 100%;
-      width: 2.0%;
-      -webkit-animation: slideright 0.2s ease-out;
-      animation: slideright 0.2s ease-out;
-      transform-origin: top left;
-    }
-    .progress-label { text-align: center; }
-    .progress-label:after { content: "2% of donor goal"; }
-
-    .progress-stats {
-      display: -webkit-flex;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-justify-content: space-around;
-      -ms-flex-pack: distribute;
-      justify-content: space-around;
-      margin-top: 50px;
-    }
-    .progress-stats .amount {
-      text-align: center;
-      width: 50%;
-    }
-    .progress-stats .amount:before,
-    .progress-stats .amount:after { display: block; }
-    .progress-stats .amount:after {
-      color: #888888;
-      text-transform: uppercase;
-    }
-    .progress-stats .amount:before { font-size: 50px; }
-    .progress-stats .total-donors { border-right: 1px solid #cccccc; }
-    .progress-stats .total-dollars:before { content: "$10,855"; }
-    .progress-stats .total-dollars:after { content: "Raised"; }
-
-    .progress-table td{ padding: 10px; }
-    .progress-table th { padding: 0 10px; }
-    .progress-table th.name:after { content: 'Name' }
-    .progress-table th.donors:after { content: 'Donors' }
-    .progress-table th.dollars:after { content: 'Dollars' }
-    .progress-table .name { width: 60%; }
-    .progress-table .alt { background-color: #e5e5e3; }
-    
+      /* Updated: 2017-04-04 19:06:06 -0400 */
+      .progress-bar {
+        border: 2px solid #555555;
+        height: 30px;
+        margin: 0 auto 7px;
+      }
+      .progress-bar .bar {
+        background-color: #900028;
+        height: 100%;
+        width: 5.0%;
+        -webkit-animation: slideright 0.2s ease-out;
+        animation: slideright 0.2s ease-out;
+        transform-origin: top left;
+      }
+      .progress-label { text-align: center; }
+      .progress-label:after { content: "5% of donor goal"; }
+  
+      .progress-stats {
+        text-align: center;
+      }
+      .progress-stats .amount {
+        display: inline-block;
+        text-align: center;
+        padding: 0 10px;
+      }
+      .progress-stats .amount:before,
+      .progress-stats .amount:after { display: inline-block; }
+      .progress-stats .amount:after {
+        color: #888888;
+        text-transform: uppercase;
+        padding: 0 5px;
+      }
+      .progress-stats .amount:before { font-size: 37px; }
+  
+      .progress-stats .total-donors:before { content: "91"; }
+      .progress-stats .total-donors:after { content: "Donors"; }
+      .progress-stats .total-dollars:before { content: "$50,003"; }
+      .progress-stats .total-dollars:after { content: "Raised"; }
+  
+      .progress-table td{ padding: 10px; }
+      .progress-table th { padding: 0 10px; }
+      .progress-table th.name:after { content: 'Name' }
+      .progress-table th.donors:after { content: 'Donors' }
+      .progress-table th.dollars:after { content: 'Dollars' }
+      .progress-table .name { width: 60%; }
+      .progress-table .alt { background-color: #e5e5e3; }
+      
         #lb-class-1 .name:after { content: "1993"; }
         #lb-class-1 .donors:after { content: "7"; }
         #lb-class-1 .dollars:after { content: "$140"; }
@@ -58,44 +53,44 @@
         #lb-class-2 .donors:after { content: "4"; }
         #lb-class-2 .dollars:after { content: "$3,200"; }
 
-        #lb-class-3 .name:after { content: "2013"; }
-        #lb-class-3 .donors:after { content: "2"; }
-        #lb-class-3 .dollars:after { content: "$250"; }
+        #lb-class-3 .name:after { content: "1982"; }
+        #lb-class-3 .donors:after { content: "3"; }
+        #lb-class-3 .dollars:after { content: "$525"; }
 
-        #lb-class-4 .name:after { content: "1979"; }
-        #lb-class-4 .donors:after { content: "2"; }
-        #lb-class-4 .dollars:after { content: "$1,100"; }
+        #lb-class-4 .name:after { content: "2017"; }
+        #lb-class-4 .donors:after { content: "3"; }
+        #lb-class-4 .dollars:after { content: "$220"; }
 
-        #lb-class-5 .name:after { content: "1971"; }
+        #lb-class-5 .name:after { content: "1995"; }
         #lb-class-5 .donors:after { content: "2"; }
-        #lb-class-5 .dollars:after { content: "$800"; }
-    
-        #lb-support-1 .name:after { content: "Women's Soccer Team"; }
-        #lb-support-1 .donors:after { content: "1"; }
-        #lb-support-1 .dollars:after { content: "$2,500"; }
+        #lb-class-5 .dollars:after { content: "$500"; }
+      
+        #lb-support-1 .name:after { content: "Fordham Fund Scholarships"; }
+        #lb-support-1 .donors:after { content: "10"; }
+        #lb-support-1 .dollars:after { content: "$3,030"; }
 
-        #lb-support-2 .name:after { content: "Aquatics (Swimming & Diving)"; }
-        #lb-support-2 .donors:after { content: "12"; }
-        #lb-support-2 .dollars:after { content: "$1,525"; }
+        #lb-support-2 .name:after { content: "Ailey/Fordham BFA Fund"; }
+        #lb-support-2 .donors:after { content: "4"; }
+        #lb-support-2 .dollars:after { content: "$2,605"; }
 
-        #lb-support-3 .name:after { content: "Football Team"; }
-        #lb-support-3 .donors:after { content: "4"; }
-        #lb-support-3 .dollars:after { content: "$1,210"; }
+        #lb-support-3 .name:after { content: "Women's Soccer Team"; }
+        #lb-support-3 .donors:after { content: "1"; }
+        #lb-support-3 .dollars:after { content: "$2,500"; }
 
-        #lb-support-4 .name:after { content: "Fordham Fund Scholarships"; }
-        #lb-support-4 .donors:after { content: "7"; }
-        #lb-support-4 .dollars:after { content: "$680"; }
+        #lb-support-4 .name:after { content: "Gabelli School of Business Undergraduate Scholarships"; }
+        #lb-support-4 .donors:after { content: "3"; }
+        #lb-support-4 .dollars:after { content: "$2,200"; }
 
-        #lb-support-5 .name:after { content: "Water Polo Team"; }
-        #lb-support-5 .donors:after { content: "1"; }
-        #lb-support-5 .dollars:after { content: "$300"; }
-
-    @-webkit-keyframes slideright {
-      0% { transform: scaleX(0); }
-      100% { transform: scaleX(100%); }
-    }
-    @keyframes slideright {
-      0% { transform: scaleX(0); }
-      100% { transform: scaleX(100%); }
-    }
-    .webkit-hide { display: none !important; }
+        #lb-support-5 .name:after { content: "Aquatics (Swimming & Diving)"; }
+        #lb-support-5 .donors:after { content: "13"; }
+        #lb-support-5 .dollars:after { content: "$1,535"; }
+  
+      @-webkit-keyframes slideright {
+        0% { transform: scaleX(0); }
+        100% { transform: scaleX(100%); }
+      }
+      @keyframes slideright {
+        0% { transform: scaleX(0); }
+        100% { transform: scaleX(100%); }
+      }
+      .webkit-hide { display: none !important; }

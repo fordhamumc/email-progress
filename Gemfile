@@ -5,7 +5,8 @@ gem 'sinatra'
 gem 'nokogiri'
 gem 'puma'
 gem 'clockwork'
-gem 'stalker'
+gem 'redis'
+gem 'sidekiq'
 gem 'screencap', github: 'Eventshare/screencap'
 
 group 'development' do
