@@ -49,94 +49,43 @@
       Margin-bottom: 8px;
     }
     .progress {
+      width: 630px;
       display: inline-block;
       -webkit-transform: scale(2);
       transform: scale(1);
       -webkit-transform-origin: left top;
       transform-origin: left top;
     }
+    .goal-label {
+      margin-top: 50px;
+    }
 
   </style>
   <link rel="stylesheet" href="progress.css">
-  <style type="text/css">
-    .progress {
-      width: 630px;
-      max-width: 100%;
-    }
-    .progress .goal {
-      box-sizing: border-box;
-      margin: 0 auto 7px;
-      height: 40px;
-      width: 100%;
-    }
-      .progress .goal-text,
-      .progress .goal-label {
-        text-align: center;
-      }
-      .progress h3.goal-label {
-        margin-top: 50px;
-      }
-      .progress-table td{
-        padding: 10px;
-      }
-      .progress-table th {
-        padding: 0 10px;
-      }
-      .progress-table .name {
-        width: 60%;
-      }
-      .progress-table .alt {
-        background-color: #e5e5e3;
-      }
-    .progress-row {
-      display: flex;
-      justify-content: space-around;
-      margin-top: 50px;
-    }
-    .progress .amount:before,
-    .progress .amount:after {
-      display: block;
-    }
-    .progress .amount:after {
-      color: #888888;
-      text-transform: uppercase;
-    }
-      .progress .amount:before {
-        font-size: 50px;
-      }
-      .progress .amount-container {
-        text-align: center;
-        width: 50%;
-      }
-    .progress .amount-container + .amount-container {
-      border-left: 1px solid #cccccc;
-    }
-  </style>
 </head>
 <body>
   <div class="progress">
-    <h2 class="goal-label">Giving Day Progress</h2>
-    <div class="goal">
-      <div class="goal-slider"></div>
-    </div>
-    <div class="goal-text"></div>
-    <div class="progress-row">
-      <div class="amount-container">
-        <div class="total-donors amount"></div>
+    <div id="progress-bar" class="progress-bar">
+      <div class="bar">
+        <div class="goal-slider"></div>
       </div>
+      <div class="progress-label"></div>
+    </div>
 
-      <div class="amount-container">
-        <div class="total-dollars amount"></div>
-      </div>
+
+    <div id="progress-stats" class="progress-stats">
+      <div class="total-donors amount"></div>
+      <div class="total-dollars amount"></div>
     </div>
+
 
     <h3 class="goal-label">Class Participation</h3>
-    <table width="100%" cellpadding="0" cellspacing="0" class="progress-table">
+    <table id="participation-class" width="100%" cellpadding="0" cellspacing="0" class="progress-table">
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Donors</th>
-          <th>Dollars</th>
+          <th class="name"></th>
+          <th class="donors"></th>
+          <th class="dollars"></th>
         </tr>
       </thead>
       <tbody>
@@ -169,43 +118,42 @@
     </table>
 
     <h3 class="goal-label">Top Supported Areas</h3>
-    <table width="100%" cellpadding="0" cellspacing="0" class="progress-table">
+    <table id="participation-areas" width="100%" cellpadding="0" cellspacing="0" class="progress-table">
       <thead>
-      <tr>
-        <th>Name</th>
-        <th>Donors</th>
-        <th>Dollars</th>
-      </tr>
+        <tr>
+          <th class="name"></th>
+          <th class="donors"></th>
+          <th class="dollars"></th>
+        </tr>
       </thead>
       <tbody>
-      <tr id="lb-support-1">
-        <td class="name"></td>
-        <td class="donors"></td>
-        <td class="dollars"></td>
-      </tr>
-      <tr id="lb-support-2" class="alt">
-        <td class="name"></td>
-        <td class="donors"></td>
-        <td class="dollars"></td>
-      </tr>
-      <tr id="lb-support-3">
-        <td class="name"></td>
-        <td class="donors"></td>
-        <td class="dollars"></td>
-      </tr>
-      <tr id="lb-support-4" class="alt">
-        <td class="name"></td>
-        <td class="donors"></td>
-        <td class="dollars"></td>
-      </tr>
-      <tr id="lb-support-5">
-        <td class="name"></td>
-        <td class="donors"></td>
-        <td class="dollars"></td>
-      </tr>
+        <tr id="lb-support-1">
+          <td class="name"></td>
+          <td class="donors"></td>
+          <td class="dollars"></td>
+        </tr>
+        <tr id="lb-support-2" class="alt">
+          <td class="name"></td>
+          <td class="donors"></td>
+          <td class="dollars"></td>
+        </tr>
+        <tr id="lb-support-3">
+          <td class="name"></td>
+          <td class="donors"></td>
+          <td class="dollars"></td>
+        </tr>
+        <tr id="lb-support-4" class="alt">
+          <td class="name"></td>
+          <td class="donors"></td>
+          <td class="dollars"></td>
+        </tr>
+        <tr id="lb-support-5">
+          <td class="name"></td>
+          <td class="donors"></td>
+          <td class="dollars"></td>
+        </tr>
       </tbody>
     </table>
-
   </div>
 </body>
 </html>
