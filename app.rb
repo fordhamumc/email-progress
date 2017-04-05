@@ -18,10 +18,10 @@ get '/progress.html' do
       <meta charset="UTF-8">
     </head>
     <body>
-      <img src="progress-bar.png" width="630"><br />
-      <img src="stats.png" width="630"><br />
-      <img src="top-years.png" width="630"><br />
-      <img src="top-areas.png" width="630">
+      <img src="https://s3.amazonaws.com/fordham-givingday/progress-bar.png" width="630"><br />
+      <img src="https://s3.amazonaws.com/fordham-givingday/stats.png" width="630"><br />
+      <img src="https://s3.amazonaws.com/fordham-givingday/top-years.png" width="630"><br />
+      <img src="https://s3.amazonaws.com/fordham-givingday/top-areas.png" width="630">
     </body>
     </html>
   HTML

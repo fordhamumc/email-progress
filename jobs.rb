@@ -14,6 +14,13 @@ Sidekiq.configure_server do |config|
   config.redis = {db: 1}
 end
 
+def awsupload(file, type = 'image/png', cache = 'no-cache, no-store, must-revalidate')
+  s3 = Aws::S3::Resource.new(region: ENV.fetch('AWS_REGION'))
+  name = File.basename(file)
+  obj = s3.bucket(ENV.fetch('AWS_BUCKET')).object(name)
+  obj.upload_file(file, acl:'public-read', content_type: type, cache_control: cache)
+end
+
 class Jobs
   include Sidekiq::Worker
 
@@ -45,16 +52,16 @@ class Jobs
         animation: slideright #{[(goalmin.to_f / 100), 0.2].max}s ease-out;
         transform-origin: top left;
       }
-      .progress-label { text-align: center; }
       .progress-label:after { content: "#{goal} of donor goal"; }
   
       .progress-stats {
-        text-align: center;
+        display: inline-block;
+        margin-bottom: 10px;
       }
       .progress-stats .amount {
         display: inline-block;
         text-align: center;
-        padding: 0 10px;
+        padding-right: 20px;
       }
       .progress-stats .amount:before,
       .progress-stats .amount:after { display: inline-block; }
@@ -92,31 +99,33 @@ class Jobs
     CSS
 
     File.open('./tmp/progress.css', 'w') {|f| f.write(output) }
-
-    s3 = Aws::S3::Resource.new(region: ENV.fetch('AWS_REGION'))
-    file = './tmp/progress.css'
-    name = File.basename(file)
-    obj = s3.bucket(ENV.fetch('AWS_BUCKET')).object(name)
-    obj.upload_file(file, acl:'public-read')
+    awsupload('./tmp/progress.css', 'text/css')
   end
 
   def self.screenshot
     f = Screencap::Fetcher.new(ENV.fetch('SCREENSHOT_URL'))
     progressbar = f.fetch(
-        :output => './public/progress-bar.png',
+        :output => './tmp/progress-bar.png',
         :div => '#progress-bar'
     )
+    awsupload(progressbar)
+
     stats = f.fetch(
         :output => './public/stats.png',
         :div => '#progress-stats'
     )
+    awsupload(stats)
+
     topyears = f.fetch(
         :output => './public/top-years.png',
         :div => '#participation-class'
     )
+    awsupload(topyears)
+
     topareas = f.fetch(
         :output => './public/top-areas.png',
         :div => '#participation-areas'
     )
+    awsupload(topareas)
   end
 end
