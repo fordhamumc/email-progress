@@ -91,9 +91,13 @@ class Jobs
       .webkit-hide { display: none !important; }
     CSS
 
-
     File.open('./tmp/progress.css', 'w') {|f| f.write(output) }
-    File.open('./tmp/progress.css', 'r') {|f| puts f.read }
+
+    s3 = Aws::S3::Resource.new(region: ENV.fetch('AWS_REGION'))
+    file = './tmp/progress.css'
+    name = File.basename(file)
+    obj = s3.bucket(ENV.fetch('AWS_BUCKET')).object(name)
+    obj.upload_file(file, acl:'public-read')
   end
 
   def self.screenshot
