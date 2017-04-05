@@ -2,7 +2,7 @@ require './jobs'
 
 module Clockwork
 
-  every 1.minute, 'css' do
+  every 30.seconds, 'css' do
     Jobs.css
   end
   every 1.minute, 'screenshot' do

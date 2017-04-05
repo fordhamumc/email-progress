@@ -3,6 +3,7 @@ require 'open-uri'
 require 'sidekiq'
 require 'nokogiri'
 require 'screencap'
+require 'aws-sdk'
 require './lib/leaderboard'
 
 Sidekiq.configure_client do |config|
@@ -90,7 +91,9 @@ class Jobs
       .webkit-hide { display: none !important; }
     CSS
 
-    File.open('./public/progress.css', 'w') {|f| f.write(output) }
+
+    File.open('./tmp/progress.css', 'w') {|f| f.write(output) }
+    File.open('./tmp/progress.css', 'r') {|f| puts f.read }
   end
 
   def self.screenshot
