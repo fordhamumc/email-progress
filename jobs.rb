@@ -79,7 +79,8 @@ class Jobs
   
       .progress-table td{ padding: 10px; }
       .progress-table th { padding: 0 10px; }
-      .progress-table th.name:after { content: 'Name' }
+      #participation-class th.name:after { content: 'Class' }
+      #participation-areas th.name:after { content: 'Fund' }
       .progress-table th.donors:after { content: 'Donors' }
       .progress-table th.dollars:after { content: 'Dollars' }
       .progress-table .name { width: 60%; }
