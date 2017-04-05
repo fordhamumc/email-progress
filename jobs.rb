@@ -55,7 +55,7 @@ class Jobs
       .progress-label:after { content: "#{goal} of donor goal"; }
   
       .progress-stats {
-        display: inline-block;
+        max-width: 440px;
         margin-bottom: 10px;
       }
       .progress-stats .amount {
