@@ -6,7 +6,11 @@ configure do
 end
 
 get '/' do
-  erb :layout
+  erb :index
+end
+
+get '/dashboard.html' do
+  erb :dashboard
 end
 
 

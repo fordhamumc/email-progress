@@ -1,0 +1,204 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="30">
+  <style type="text/css">
+    @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600');
+
+    body {
+      color: #444444;
+      font-family: 'Open Sans', Arial, sans-serif;
+      font-weight: normal;
+      line-height: 1.6;
+      text-align: left;
+      word-spacing: 0;
+    }
+    p,
+    td {
+      padding: 0;
+    }
+    strong {
+      font-weight: 600;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      font-weight: 600;
+      Margin-top: 0;
+    }
+    h1, h2 {
+      line-height: 1.4;
+    }
+    h1 {
+      font-size: 37px;
+      Margin-bottom: 12px;
+    }
+    h2 {
+      font-size: 32px;
+      Margin-bottom: 12px;
+    }
+    h3 {
+      font-size: 25px;
+      Margin-bottom: 8px;
+      line-height: 1.5;
+    }
+    h4 {
+      font-size: 18px;
+      Margin-bottom: 8px;
+    }
+    h5 {
+      font-size: 15px;
+      Margin-bottom: 8px;
+    }
+    .progress {
+      -webkit-transform: scale(2);
+      transform: scale(1);
+      -webkit-transform-origin: left top;
+      transform-origin: left top;
+    }
+    .goal-label {
+      font-size: 20px;
+      margin-top: 50px;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 3px;
+      margin-bottom: 18px;
+    }
+
+
+  </style>
+  <link rel="stylesheet" href="https://s3.amazonaws.com/fordham-givingday/progress.css">
+  <style type="text/css">
+    .overall-progress {
+      max-width: 630px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .progress-stats {
+      max-width: 100%;
+    }
+    .container {
+      display: flex;
+    }
+    .item {
+      width: 50%;
+      margin: 0 40px;
+    }
+    .giving-button {
+      max-width: 100%;
+      width: 200px;
+      display: block;
+      margin: 0 auto 20px;
+    }
+
+    @media screen and (max-width: 950px) {
+      .container {
+        display: block;
+      }
+      .item {
+        width: 100%;
+        max-width: 630px;
+        margin: 0 auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress">
+    <a href="https://www.givecampus.com/schools/FordhamUniversity/fordham-university-s-giving-day">
+      <img src="./GivingDay_MaroonCircle.jpg" class="giving-button"></a>
+    <div class="overall-progress">
+      <div id="progress-stats" class="progress-stats">
+        <div class="total-donors amount"></div>
+        <div class="total-dollars amount"></div>
+      </div>
+
+
+      <div id="progress-bar">
+        <div class="progress-bar">
+          <div class="bar"></div>
+        </div>
+        <div class="progress-label"></div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="item">
+        <h4 class="goal-label">Top Classes by Participation</h4>
+        <table id="participation-class" width="100%" cellpadding="0" cellspacing="0" class="progress-table">
+          <thead>
+            <tr>
+              <th class="name"></th>
+              <th class="donors"></th>
+              <th class="dollars"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr id="lb-class-1">
+              <td class="name"></td>
+              <td class="donors"></td>
+              <td class="dollars"></td>
+            </tr>
+            <tr id="lb-class-2" class="alt">
+              <td class="name"></td>
+              <td class="donors"></td>
+              <td class="dollars"></td>
+            </tr>
+            <tr id="lb-class-3">
+              <td class="name"></td>
+              <td class="donors"></td>
+              <td class="dollars"></td>
+            </tr>
+            <tr id="lb-class-4" class="alt">
+              <td class="name"></td>
+              <td class="donors"></td>
+              <td class="dollars"></td>
+            </tr>
+            <tr id="lb-class-5">
+              <td class="name"></td>
+              <td class="donors"></td>
+              <td class="dollars"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="item">
+        <h4 class="goal-label">Top Funds by Amount</h4>
+        <table id="participation-areas" width="100%" cellpadding="0" cellspacing="0" class="progress-table">
+          <thead>
+            <tr>
+              <th class="name"></th>
+              <th class="donors"></th>
+              <th class="dollars"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr id="lb-support-1">
+              <td class="name"></td>
+              <td class="donors"></td>
+              <td class="dollars"></td>
+            </tr>
+            <tr id="lb-support-2" class="alt">
+              <td class="name"></td>
+              <td class="donors"></td>
+              <td class="dollars"></td>
+            </tr>
+            <tr id="lb-support-3">
+              <td class="name"></td>
+              <td class="donors"></td>
+              <td class="dollars"></td>
+            </tr>
+            <tr id="lb-support-4" class="alt">
+              <td class="name"></td>
+              <td class="donors"></td>
+              <td class="dollars"></td>
+            </tr>
+            <tr id="lb-support-5">
+              <td class="name"></td>
+              <td class="donors"></td>
+              <td class="dollars"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
