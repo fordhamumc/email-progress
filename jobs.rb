@@ -23,8 +23,7 @@ def awsupload(file, type = 'image/png', cache = 'no-cache, no-store, must-revali
   obj.upload_file(file, acl:'public-read', content_type: type, cache_control: cache)
 end
 
-def cachedata(name, data)
-  redis = Redis.new
+def cachedata(name, data, redis)
   if data != redis.get(name) || !redis.exists("#{name}_change")
     puts "#{name} changed"
     redis.mset(name, data, "#{name}_change", Time.new.to_i, "#{name}_screenshot", true)
@@ -33,12 +32,11 @@ end
 
 class Jobs
   include Sidekiq::Worker
-
+  @redis = Redis.new
 
   def self.css
     url = ENV.fetch('GIVECAMPUS_URL')
     data = Nokogiri::HTML(open(url))
-    redis = Redis.new
 
     donors = data.at_css(ENV.fetch('DONORS_PATH')).content.strip
     goal = data.at_css(ENV.fetch('GOAL_PATH')).content.strip
@@ -49,21 +47,21 @@ class Jobs
     leaderboard_class = Leaderboard.new(ENV.fetch('LEADERBOARDITEM_CLASS'), leaderboards).strip('name', /\D/).sort('donors')
     leaderboard_scholarships = Leaderboard.new(ENV.fetch('LEADERBOARDITEM_SCHOLARSHIP'), leaderboards).sort('dollars')
 
-    cachedata('lb_class', leaderboard_class.to_json)
-    cachedata('lb_scholarships', leaderboard_scholarships.to_json)
-    cachedata('donors', donors)
-    cachedata('goal', goal)
-    cachedata('raised', raised)
+    cachedata('lb_class', leaderboard_class.to_json, @redis)
+    cachedata('lb_scholarships', leaderboard_scholarships.to_json, @redis)
+    cachedata('donors', donors, @redis)
+    cachedata('goal', goal, @redis)
+    cachedata('raised', raised, @redis)
 
 
-    if [redis.get('lb_class_change'),
-         redis.get('lb_scholarships_change'),
-         redis.get('donors_change'),
-         redis.get('goal_change'),
-         redis.get('raised_change')].all? {|t| t.to_i <= redis.get('css_change').to_i}
+    if [@redis.get('lb_class_change'),
+         @redis.get('lb_scholarships_change'),
+         @redis.get('donors_change'),
+         @redis.get('goal_change'),
+         @redis.get('raised_change')].all? {|t| t.to_i <= @redis.get('css_change').to_i}
       puts 'Data are unchanged.'
     else
-      redis.set('css_change', Time.new.to_i)
+      @redis.set('css_change', Time.new.to_i)
       output = <<-CSS
         /* Updated: #{Time.new.inspect} */
         .progress-bar {
@@ -133,48 +131,48 @@ class Jobs
   end
 
   def self.screenshot
-    redis = Redis.new
     f = Screencap::Fetcher.new(ENV.fetch('SCREENSHOT_URL'))
-    if redis.get('goal_screenshot') == 'true'
+    if @redis.get('goal_screenshot') == 'true'
       puts 'Generating new progress bar screenshot'
       progressbar = f.fetch(
           :output => './tmp/progress-bar.png',
           :div => '#progress-bar'
       )
       awsupload(progressbar)
-      redis.set('goal_screenshot', false)
+      @redis.set('goal_screenshot', false)
     end
 
-    if redis.get('donors_screenshot') == 'true' || redis.get('raised_screenshot') == 'true'
+    if @redis.get('donors_screenshot') == 'true' || @redis.get('raised_screenshot') == 'true'
       puts 'Generating new overall stats screenshot'
       stats = f.fetch(
           :output => './public/stats.png',
           :div => '#progress-stats'
       )
       awsupload(stats)
-      redis.set('donors_screenshot', false)
+      @redis.set('donors_screenshot', false)
+      @redis.set('raised_screenshot', false)
     end
 
 
-    if redis.get('lb_class_screenshot') == 'true'
+    if @redis.get('lb_class_screenshot') == 'true'
       puts 'Generating new class participation screenshot'
       topyears = f.fetch(
           :output => './public/top-years.png',
           :div => '#participation-class'
       )
       awsupload(topyears)
-      redis.set('lb_class_screenshot', false)
+      @redis.set('lb_class_screenshot', false)
     end
 
 
-    if redis.get('lb_scholarships_screenshot') == 'true'
+    if @redis.get('lb_scholarships_screenshot') == 'true'
       puts 'Generating new funding areas screenshot'
       topareas = f.fetch(
           :output => './public/top-areas.png',
           :div => '#participation-areas'
       )
       awsupload(topareas)
-      redis.set('lb_scholarships_screenshot', false)
+      @redis.set('lb_scholarships_screenshot', false)
     end
   end
 end
