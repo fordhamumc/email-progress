@@ -21,5 +21,6 @@ your own version of this application. You'll need a URL to scrape and CSS paths 
 3. Create Environment File: `cp .env.example .env` 
 4. Enter the URL to Scape in `.env`
 5. Enter the CSS Paths to the Data to Scrape `.env`
+6. Run `redis-server`
 6. Run `bundle exec foreman start`
 7. Visit [http://localhost:5000/progress.css](http://localhost:5000/progress.css)

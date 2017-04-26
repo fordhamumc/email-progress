@@ -1,5 +1,5 @@
 {
-  "name": "GiveCampus Campaign Status in CSS",
+  "name": "GiveCampus Progress",
   "description": "A simple Sinatra application that populates GiveCampus content in CSS",
   "repository": "https://github.com/fordhamumc/email-progress.git",
   "success_url": "/progress.css",
@@ -42,6 +42,26 @@
     "SCREENSHOT_URL": {
       "description": "The URL to screenshot for the backup image.",
       "value": "https://fordham-giving-progress.herokuapp.com/",
+      "required": true
+    },
+    "AWS_ACCESS_KEY_ID": {
+      "description": "Amazon Web Services access key.",
+      "value": "",
+      "required": true
+    },
+    "AWS_SECRET_ACCESS_KEY": {
+      "description": "Amazon Web Services secret access key.",
+      "value": "",
+      "required": true
+    },
+    "AWS_REGION": {
+      "description": "Amazon Web Services region.",
+      "value": "",
+      "required": true
+    },
+    "AWS_BUCKET": {
+      "description": "Amazon Web Services S3 bucket.",
+      "value": "",
       "required": true
     }
   }

@@ -48,4 +48,8 @@ class Leaderboard
       result
     end.join("\n")
   end
+
+  def to_json()
+    @leaderboard.to_json
+  end
 end
