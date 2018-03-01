@@ -1,4 +1,6 @@
 require './jobs'
+require 'clockwork'
+require 'active_support/time'
 
 module Clockwork
 
