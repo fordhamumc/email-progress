@@ -23,16 +23,16 @@ def awsupload(file, type = 'image/png', cache = 'no-cache, no-store, must-revali
   obj.upload_file(file, acl:'public-read', content_type: type, cache_control: cache)
 end
 
-def cachedata(name, data, redis)
-  if data != redis.get(name) || !redis.exists("#{name}_change")
-    puts "#{name} changed"
-    redis.mset(name, data, "#{name}_change", Time.new.to_i, "#{name}_screenshot", true)
-  end
-end
-
 class Jobs
   include Sidekiq::Worker
   @redis = Redis.new
+
+  def self.cachedata(name, data)
+    if data != @redis.get(name) || !@redis.exists("#{name}_change")
+      puts "#{name} changed"
+      @redis.mset(name, data, "#{name}_change", Time.new.to_i, "#{name}_screenshot", true)
+    end
+  end
 
   def self.css
     url = ENV.fetch('GIVECAMPUS_URL')
@@ -47,11 +47,11 @@ class Jobs
     leaderboard_class = Leaderboard.new(ENV.fetch('LEADERBOARDITEM_CLASS'), leaderboards).strip('name', /\D/).sort('donors')
     leaderboard_scholarships = Leaderboard.new(ENV.fetch('LEADERBOARDITEM_SCHOLARSHIP'), leaderboards).sort('dollars')
 
-    cachedata('lb_class', leaderboard_class.to_json, @redis)
-    cachedata('lb_scholarships', leaderboard_scholarships.to_json, @redis)
-    cachedata('donors', donors, @redis)
-    cachedata('goal', goal, @redis)
-    cachedata('raised', raised, @redis)
+    cachedata('lb_class', leaderboard_class.to_json)
+    cachedata('lb_scholarships', leaderboard_scholarships.to_json)
+    cachedata('donors', donors)
+    cachedata('goal', goal)
+    cachedata('raised', raised)
 
 
     if [@redis.get('lb_class_change'),
@@ -65,9 +65,11 @@ class Jobs
       output = <<-CSS
         /* Updated: #{Time.new.inspect} */
         .progress-bar {
-          border: 2px solid #555555;
-          height: 30px;
-          margin: 0 auto 7px;
+          background: #ededec;
+          border: 1px solid #999999;
+          border-radius: 4px;
+          height: 4px;
+          margin: 0 auto;
         }
         .progress-bar .bar {
           background-color: #900028;
@@ -77,26 +79,31 @@ class Jobs
           animation: slideright #{[(goalmin.to_f / 100), 0.2].max}s ease-out;
           transform-origin: top left;
         }
-        .progress-label:after { content: "#{goal} of donor goal"; }
     
         .progress-stats {
-          max-width: 440px;
-          margin-bottom: 10px;
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          -ms-flex-wrap: wrap;
+              flex-wrap: wrap;
+          -ms-flex-pack: distribute;
+          justify-content: space-around;
         }
         .progress-stats .amount {
-          display: inline-block;
           text-align: center;
-          padding-right: 20px;
+          margin: 10px;
         }
         .progress-stats .amount:before,
-        .progress-stats .amount:after { display: inline-block; }
+        .progress-stats .amount:after { display: block; }
         .progress-stats .amount:after {
           color: #888888;
           text-transform: uppercase;
-          padding: 0 5px;
         }
         .progress-stats .amount:before { font-size: 37px; }
     
+
+        .progress-stats .total-goal:before { content: "#{goal}"; }
+        .progress-stats .total-goal:after { content: "of Donor Goal"; }
         .progress-stats .total-donors:before { content: "#{donors}"; }
         .progress-stats .total-donors:after { content: "Donors"; }
         .progress-stats .total-dollars:before { content: "#{raised}"; }
