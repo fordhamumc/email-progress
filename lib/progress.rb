@@ -1,6 +1,6 @@
 class Progress
   def initialize(donors, goal, raised, start = 0)
-    @donors = donors.to_i - start.to_i
+    @donors = donors.gsub(/\D/,'').to_i - start.to_i
     @goal = [goal.gsub(/\D/,'').to_i,1].max
     @raised = raised.to_s
     @progress = [@donors.to_f / @goal, 1].min.round(2)
