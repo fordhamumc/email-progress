@@ -39,6 +39,16 @@
       "value": "top supported areas",
       "required": true
     },
+    "CHALLENGE_GOAL": {
+      "description": "The goal for a specific challenge",
+      "value": "0",
+      "required": true
+    },
+    "CHALLENGE_START": {
+      "description": "The starting point for the challenge",
+      "value": "0",
+      "required": true
+    },
     "SCREENSHOT_URL": {
       "description": "The URL to screenshot for the backup image.",
       "value": "https://fordham-giving-progress.herokuapp.com/",

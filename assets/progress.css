@@ -1,0 +1,113 @@
+/* Progress Bar Defaults */
+.progress-container {
+    height: 64px;
+    margin-top: -39px;
+    padding-top: 47.9452055%;
+}
+.progress-bar {
+    background: #16150e;
+    height: 25px;
+    position: relative;
+    overflow: hidden;
+}
+.progress,
+.progress-percent {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border-right: 2px solid #eccb51;
+}
+.progress {
+    background: #eccb51;
+    height: 25px;
+}
+.progress-percent {
+    color: #333333;
+    line-height: 1;
+    padding-bottom: 15px;
+    text-align: right;
+}
+.progress-percent:before {
+    background: #eccb51;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    text-align: center;
+    -webkit-transform-origin: top left;
+    -ms-transform-origin: top left;
+    transform-origin: top left;
+    width: 42px;
+}
+
+.progress-count {
+    position: absolute;
+    top: 0;
+}
+
+.progress-count:after {
+    display: inline-block;
+    font-size: 14px;
+    line-height: 25px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.progress,
+.progress-percent {
+    -webkit-transform-origin: top left;
+    -ms-transform-origin: top left;
+    transform-origin: top left;
+}
+
+
+/* Progress Stats Defaults */
+.progress-stats {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
+}
+.progress-stats .amount {
+    text-align: center;
+    margin: 10px;
+}
+.progress-stats .amount:before,
+.progress-stats .amount:after { display: block; }
+.progress-stats .amount:after {
+    color: #888888;
+    text-transform: uppercase;
+}
+.progress-stats .amount:before { font-size: 37px; }
+.progress-stats .total-goal:after { content: "of Donor Goal"; }
+.progress-stats .total-donors:after { content: "Donors"; }
+.progress-stats .total-dollars:after { content: "Raised"; }
+
+
+/* Leaderboard Defaults */
+.progress-table td{ padding: 10px; }
+.progress-table th { padding: 0 10px; }
+#participation-class th.name:after { content: 'Class' }
+#participation-areas th.name:after { content: 'Fund' }
+.progress-table th.donors:after { content: 'Donors' }
+.progress-table th.dollars:after { content: 'Dollars' }
+.progress-table .name { width: 60%; }
+.progress-table .alt { background-color: #e5e5e3; }
+
+
+/* Keyframes */
+@-webkit-keyframes slideright {
+    0% { -webkit-transform: translateX(-100%); transform: translateX(-100%); }
+    100% { -webkit-transform: translateX(0); transform: translateX(0); }
+}
+@keyframes slideright {
+    0% { -webkit-transform: translateX(-100%); transform: translateX(-100%); }
+    100% { -webkit-transform: translateX(0); transform: translateX(0); }
+}
+
+
+/* Utilities */
+.webkit-hide { display: none !important; }

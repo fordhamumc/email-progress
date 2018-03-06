@@ -48,13 +48,21 @@
       font-size: 15px;
       Margin-bottom: 8px;
     }
-    .progress {
-      width: 630px;
+    .container {
       display: inline-block;
       -webkit-transform: scale(2);
       transform: scale(1);
       -webkit-transform-origin: left top;
       transform-origin: left top;
+    }
+    .progress-container {
+      width: 730px;
+      margin-bottom: 20px
+    }
+    .progress-stats,
+    .goal-label,
+    .progress-table {
+      width: 660px;
     }
     .goal-label {
       margin-top: 50px;
@@ -62,12 +70,30 @@
 
   </style>
   <link rel="stylesheet" href="https://s3.amazonaws.com/<%= @bucket %>/progress.css">
+  <style>
+    .progress-container {
+      margin-top: 0;
+      padding-top: 311px;
+    }
+  </style>
 </head>
 <body>
-  <div class="progress">
+  <div class="container">
 
-    <div class="progress-bar" id="progress-bar">
-      <div class="bar"></div>
+    <div class="progress-container" id="progress-bar">
+      <div class="progress-percent"></div>
+      <div class="progress-bar">
+        <div class="progress"></div>
+        <div class="progress-count"></div>
+      </div>
+    </div>
+
+    <div class="progress-container" id="challenge-bar">
+      <div class="progress-percent"></div>
+      <div class="progress-bar">
+        <div class="progress"></div>
+        <div class="progress-count"></div>
+      </div>
     </div>
 
     <div id="progress-stats" class="progress-stats">

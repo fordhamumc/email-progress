@@ -6,6 +6,7 @@ require 'screencap'
 require 'aws-sdk'
 require 'redis'
 require './lib/leaderboard'
+require './lib/progress'
 
 Sidekiq.configure_client do |config|
   config.redis = {db: 1}
@@ -13,6 +14,10 @@ end
 
 Sidekiq.configure_server do |config|
   config.redis = {db: 1}
+end
+
+def number_with_delimiter(number, delimiter=',')
+  number.to_s.gsub(/(\d)(?=(\d\d\d)+(?!\d))/, "\\1#{delimiter}")
 end
 
 
@@ -26,109 +31,77 @@ end
 class Jobs
   include Sidekiq::Worker
   @redis = Redis.new
+  @screencap = Screencap::Fetcher.new(ENV.fetch('SCREENSHOT_URL'))
 
   def self.cachedata(name, data)
-    if data != @redis.get(name) || !@redis.exists("#{name}_change")
+    if data.to_s != @redis.get(name) || !@redis.exists("#{name}_change")
       puts "#{name} changed"
-      @redis.mset(name, data, "#{name}_change", Time.new.to_i, "#{name}_screenshot", true)
+      @redis.setbit("#{name}_screenshot", 0, 1)
+      @redis.mset(name, data, "#{name}_change", Time.new.to_i)
+    end
+  end
+
+  def self.screenshot(conditions, filename, location)
+    if conditions.any? {|condition| @redis.getbit(condition + '_screenshot', 0) == 1}
+      puts 'Generating new ' + filename.to_s
+      screenshot = @screencap.fetch(
+          :output => './tmp/' + filename.to_s,
+          :div => location.to_s
+      )
+      awsupload(screenshot)
+      conditions.each {|condition| @redis.setbit(condition + '_screenshot', 0, 0)}
     end
   end
 
   def self.css
     url = ENV.fetch('GIVECAMPUS_URL')
     data = Nokogiri::HTML(open(url))
+    defaults = File.read(File.join('assets', 'progress.css'))
 
-    donors = data.at_css(ENV.fetch('DONORS_PATH')).content.strip
-    goal = data.at_css(ENV.fetch('GOAL_PATH')).content.strip
-    goalmin = [goal.to_f, 100].min
     raised = data.at_css(ENV.fetch('RAISED_PATH')).content.strip
+    donors = data.at_css(ENV.fetch('DONORS_PATH')).content.strip
+    goal = data.at_css(ENV.fetch('GOAL_PATH')).content
+
+    challenge_goal = ENV.fetch('CHALLENGE_GOAL')
+    challenge_start = ENV.fetch('CHALLENGE_START')
+
+    progress_overall = Progress.new(donors, goal, raised)
+    progress_challenge = Progress.new(donors, challenge_goal, raised, challenge_start)
 
     leaderboards = data.css(ENV.fetch('LEADERBOARD_PATH'))
     leaderboard_class = Leaderboard.new(ENV.fetch('LEADERBOARDITEM_CLASS'), leaderboards).strip('name', /\D/).sort('donors')
     leaderboard_scholarships = Leaderboard.new(ENV.fetch('LEADERBOARDITEM_SCHOLARSHIP'), leaderboards).sort('dollars')
+
 
     cachedata('lb_class', leaderboard_class.to_json)
     cachedata('lb_scholarships', leaderboard_scholarships.to_json)
     cachedata('donors', donors)
     cachedata('goal', goal)
     cachedata('raised', raised)
+    cachedata('challenge_goal', challenge_goal)
+    cachedata('challenge_start', challenge_start)
 
 
-    if [@redis.get('lb_class_change'),
+    if [ @redis.get('lb_class_change'),
          @redis.get('lb_scholarships_change'),
          @redis.get('donors_change'),
          @redis.get('goal_change'),
-         @redis.get('raised_change')].all? {|t| t.to_i <= @redis.get('css_change').to_i}
+         @redis.get('raised_change'),
+         @redis.get('challenge_goal_change'),
+         @redis.get('challenge_start_change')].all? {|t| t.to_i <= @redis.get('css_change').to_i}
       puts 'Data are unchanged.'
     else
       @redis.set('css_change', Time.new.to_i)
       output = <<-CSS
         /* Updated: #{Time.new.inspect} */
-        .progress-bar {
-          background: #ededec;
-          border: 1px solid #999999;
-          border-radius: 4px;
-          height: 4px;
-          margin: 0 auto;
-        }
-        .progress-bar .bar {
-          background-color: #900028;
-          height: 100%;
-          width: #{goalmin}%;
-          -webkit-animation: slideright #{[(goalmin.to_f / 100), 0.2].max}s ease-out;
-          animation: slideright #{[(goalmin.to_f / 100), 0.2].max}s ease-out;
-          transform-origin: top left;
-        }
-    
-        .progress-stats {
-          display: -webkit-box;
-          display: -ms-flexbox;
-          display: flex;
-          -ms-flex-wrap: wrap;
-              flex-wrap: wrap;
-          -ms-flex-pack: distribute;
-          justify-content: space-around;
-        }
-        .progress-stats .amount {
-          text-align: center;
-          margin: 10px;
-        }
-        .progress-stats .amount:before,
-        .progress-stats .amount:after { display: block; }
-        .progress-stats .amount:after {
-          color: #888888;
-          text-transform: uppercase;
-        }
-        .progress-stats .amount:before { font-size: 37px; }
-    
 
-        .progress-stats .total-goal:before { content: "#{goal}"; }
-        .progress-stats .total-goal:after { content: "of Donor Goal"; }
-        .progress-stats .total-donors:before { content: "#{donors}"; }
-        .progress-stats .total-donors:after { content: "Donors"; }
-        .progress-stats .total-dollars:before { content: "#{raised}"; }
-        .progress-stats .total-dollars:after { content: "Raised"; }
-    
-        .progress-table td{ padding: 10px; }
-        .progress-table th { padding: 0 10px; }
-        #participation-class th.name:after { content: 'Class' }
-        #participation-areas th.name:after { content: 'Fund' }
-        .progress-table th.donors:after { content: 'Donors' }
-        .progress-table th.dollars:after { content: 'Dollars' }
-        .progress-table .name { width: 60%; }
-        .progress-table .alt { background-color: #e5e5e3; }
+        #{defaults}
+        #{progress_overall.barcss('#progress-bar')}
+        #{progress_challenge.barcss('#challenge-bar')}
+        #{progress_overall.statscss('#progress-stats')}
         #{leaderboard_class.css('class')}
         #{leaderboard_scholarships.css('support')}
-    
-        @-webkit-keyframes slideright {
-          0% { transform: scaleX(0); }
-          100% { transform: scaleX(100%); }
-        }
-        @keyframes slideright {
-          0% { transform: scaleX(0); }
-          100% { transform: scaleX(100%); }
-        }
-        .webkit-hide { display: none !important; }
+
       CSS
 
       puts 'Uploading new stylesheet'
@@ -137,49 +110,13 @@ class Jobs
     end
   end
 
-  def self.screenshot
-    f = Screencap::Fetcher.new(ENV.fetch('SCREENSHOT_URL'))
-    if @redis.get('goal_screenshot') == 'true'
-      puts 'Generating new progress bar screenshot'
-      progressbar = f.fetch(
-          :output => './tmp/progress-bar.png',
-          :div => '#progress-bar'
-      )
-      awsupload(progressbar)
-      @redis.set('goal_screenshot', false)
+  def self.screenshots
+    self.screenshot(%w{goal donors}, 'progress-bar.png', '#progress-bar')
+    if @redis.get('challenge_goal').to_i > 0
+      self.screenshot(%w{challenge_goal challenge_start donors}, 'challenge-bar.png', '#challenge-bar')
     end
-
-    if @redis.get('donors_screenshot') == 'true' || @redis.get('raised_screenshot') == 'true'
-      puts 'Generating new overall stats screenshot'
-      stats = f.fetch(
-          :output => './public/stats.png',
-          :div => '#progress-stats'
-      )
-      awsupload(stats)
-      @redis.set('donors_screenshot', false)
-      @redis.set('raised_screenshot', false)
-    end
-
-
-    if @redis.get('lb_class_screenshot') == 'true'
-      puts 'Generating new class participation screenshot'
-      topyears = f.fetch(
-          :output => './public/top-years.png',
-          :div => '#participation-class'
-      )
-      awsupload(topyears)
-      @redis.set('lb_class_screenshot', false)
-    end
-
-
-    if @redis.get('lb_scholarships_screenshot') == 'true'
-      puts 'Generating new funding areas screenshot'
-      topareas = f.fetch(
-          :output => './public/top-areas.png',
-          :div => '#participation-areas'
-      )
-      awsupload(topareas)
-      @redis.set('lb_scholarships_screenshot', false)
-    end
+    self.screenshot(%w{raised donors}, 'stats.png', '#progress-stats')
+    self.screenshot(%w{lb_class}, 'top-years.png', '#participation-class')
+    self.screenshot(%w{lb_scholarships}, 'top-areas.png', '#participation-areas')
   end
 end

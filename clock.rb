@@ -9,7 +9,7 @@ module Clockwork
     puts 'Finished \'css\''
   end
   every 1.minute, 'screenshot' do
-    Jobs.screenshot
+    Jobs.screenshots
     puts 'Finished \'screenshot\''
   end
 end
