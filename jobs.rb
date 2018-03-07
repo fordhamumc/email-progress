@@ -49,7 +49,6 @@ class Jobs
           :div => location.to_s
       )
       awsupload(screenshot)
-      conditions.each {|condition| @redis.setbit(condition + '_screenshot', 0, 0)}
     end
   end
 
@@ -113,10 +112,11 @@ class Jobs
   def self.screenshots
     self.screenshot(%w{goal donors}, 'progress-bar.png', '#progress-bar')
     if @redis.get('challenge_goal').to_i > 0
-      self.screenshot(%w{challenge_goal challenge_start donors}, 'challenge-bar.png', '#challenge-bar')
+      self.screenshot(%w{donors challenge_goal challenge_start}, 'challenge-bar.png', '#challenge-bar')
     end
     self.screenshot(%w{raised donors}, 'stats.png', '#progress-stats')
     self.screenshot(%w{lb_class}, 'top-years.png', '#participation-class')
     self.screenshot(%w{lb_scholarships}, 'top-areas.png', '#participation-areas')
+    %w{goal donors raised challenge_goal challenge_start lb_class lb_scholarships}.each {|condition| @redis.setbit(condition + '_screenshot', 0, 0)}
   end
 end
