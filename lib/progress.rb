@@ -5,6 +5,7 @@ class Progress
     @raised = raised.to_s
     @progress = [@donors.to_f / @goal, 1].min.round(2)
     @percent = (@progress * 100).round.to_s + '%'
+    @percentfull = (@donors.to_f / @goal * 100).round.to_s + '%'
     @maxwidth = (730 * @progress + (@progress - 0.5) * 365).floor
   end
   def number_with_delimiter(number, delimiter=',')
@@ -60,7 +61,7 @@ class Progress
         width: #{@percent};
       }
       #{namespace} .progress-percent:before {
-        content: '#{@percent}';
+        content: '#{@percentfull}';
         #{self.flag_position}
       }
       #{namespace} .progress-count {
