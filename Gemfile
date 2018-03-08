@@ -1,14 +1,14 @@
 source 'https://rubygems.org'
 ruby File.read('.ruby-version').strip
 
-gem 'sinatra', '~> 1.4'
-gem 'nokogiri', '~> 1.8.1'
-gem 'puma', '~> 2.11'
-gem 'activesupport', '~> 5.0.2'
+gem 'sinatra', '~> 2.0'
+gem 'nokogiri', '~> 1.8'
+gem 'puma', '~> 3.11'
+gem 'activesupport', '~> 5.1'
 gem 'clockwork', '~> 2.0'
-gem 'redis', '~> 3.3'
-gem 'sidekiq', '~> 4.2'
-gem 'aws-sdk', '~> 2'
+gem 'redis', '~> 4.0'
+gem 'sidekiq', '~> 5.1'
+gem 'aws-sdk', '~> 3.0'
 gem 'screencap', github: 'Eventshare/screencap'
 
 group 'development' do
