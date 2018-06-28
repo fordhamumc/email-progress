@@ -15,7 +15,7 @@
       "required": true
     },
     "GOAL_PATH": {
-      "description": "The path to the percent of donor goal.",
+      "description": "The path to the donor goal.",
       "value": ".campaign-details .row .row:first-child .progress-percent",
       "required": true
     },
@@ -25,7 +25,7 @@
       "required": true
     },
     "LEADERBOARD_PATH": {
-      "description": "The path to the leaderboard object.",
+      "description": "The path to the leaderboard tables.",
       "value": ".leaderboard-table",
       "required": true
     },
