@@ -5,12 +5,14 @@ class Leaderboard
 
   def reduce(search, arr)
     arr.map do |lb|
-      if lb.at_css('caption > text()').content.strip.downcase == search
+      if lb.at_css('caption h3').content.strip.downcase == search
         lb.css('tbody tr').map do |item|
           {
               'name' => child(1, item),
               'donors' => child(2, item),
-              'dollars' => child(3, item)
+              'dollars' => child(3, item),
+              'goal' => child(4, item),
+              'percent' => child(5, item)
           }
         end
       end
@@ -18,7 +20,8 @@ class Leaderboard
   end
 
   def child(num, arr)
-    arr.at_css("td:nth-child(#{num})").content.strip
+    match = arr.at_css("td:nth-child(#{num})")
+    match ? match.content.strip : ''
   end
 
   def sort(column, dir = 'desc')
@@ -43,7 +46,7 @@ class Leaderboard
       result = ''
       item.each do |key, value|
         result << "
-        #lb-#{namespace}-#{i + 1} .#{key}:after { content: \"#{value}\"; }"
+        #lb-#{namespace}-#{i + 1} .#{key}:before { content: \"#{value}\"; }"
       end
       result
     end.join("\n")

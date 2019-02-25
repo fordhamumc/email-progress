@@ -68,7 +68,7 @@ class Jobs
     progress_challenge = Progress.new(donors, challenge_goal, raised, challenge_start)
 
     leaderboards = data.css(ENV.fetch('LEADERBOARD_PATH'))
-    leaderboard_class = Leaderboard.new(ENV.fetch('LEADERBOARDITEM_CLASS'), leaderboards).strip('name', /\D/).sort('donors')
+    leaderboard_class = Leaderboard.new(ENV.fetch('LEADERBOARDITEM_CLASS'), leaderboards).strip('percent', /[^\d.]/).sort('percent')
     leaderboard_scholarships = Leaderboard.new(ENV.fetch('LEADERBOARDITEM_SCHOLARSHIP'), leaderboards).sort('dollars')
 
 

@@ -114,6 +114,7 @@ Include your generated stylesheet but hide it from outlook. Then copy the below 
       <th class="name"></th>
       <th class="donors"></th>
       <th class="dollars"></th>
+      <th class="goal"></th>
     </tr>
   </thead>
   <tbody>
@@ -121,26 +122,31 @@ Include your generated stylesheet but hide it from outlook. Then copy the below 
       <td class="name"></td>
       <td class="donors"></td>
       <td class="dollars"></td>
+      <td class="goal"></td>
     </tr>
     <tr id="lb-class-2" class="alt">
       <td class="name"></td>
       <td class="donors"></td>
       <td class="dollars"></td>
+      <td class="goal"></td>
     </tr>
     <tr id="lb-class-3">
       <td class="name"></td>
       <td class="donors"></td>
       <td class="dollars"></td>
+      <td class="goal"></td>
     </tr>
     <tr id="lb-class-4" class="alt">
       <td class="name"></td>
       <td class="donors"></td>
       <td class="dollars"></td>
+      <td class="goal"></td>
     </tr>
     <tr id="lb-class-5">
       <td class="name"></td>
       <td class="donors"></td>
       <td class="dollars"></td>
+      <td class="goal"></td>
     </tr>
   </tbody>
 </table>

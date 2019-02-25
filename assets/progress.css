@@ -90,10 +90,11 @@
 /* Leaderboard Defaults */
 .progress-table td{ padding: 10px; }
 .progress-table th { padding: 0 10px; }
-#participation-class th.name:after { content: 'Class' }
+#participation-class th.name:after { content: 'Chapter' }
 #participation-areas th.name:after { content: 'Fund' }
 .progress-table th.donors:after { content: 'Donors' }
 .progress-table th.dollars:after { content: 'Dollars' }
+.progress-table th.goal:after { content: 'Goal' }
 .progress-table .name { width: 60%; }
 .progress-table .alt { background-color: #e5e5e3; }
 
